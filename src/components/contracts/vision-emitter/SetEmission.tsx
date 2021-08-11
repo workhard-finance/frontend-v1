@@ -111,8 +111,8 @@ export const SetEmission = () => {
   useEffect(() => {
     if (pools && emissionWeight && founderShareDenom) {
       let sum = BigNumber.from(0)
-        .add(emissionWeight.treasury)
-        .add(emissionWeight.caller);
+        .add(treasuryWeight || emissionWeight.treasury)
+        .add(callerWeight || emissionWeight.caller);
       sum = pools.reduce((acc, pool) => acc.add(pool.weight), sum);
       const dev = sum.div(founderShareDenom);
       sum = sum.add(dev);
@@ -158,8 +158,8 @@ export const SetEmission = () => {
     }
 
     const signer = library.getSigner(account);
-    const emissionSetTx = await workhardCtx.dao.visionEmitter.populateTransaction.setEmission(
-      {
+    const emissionSetTx =
+      await workhardCtx.dao.visionEmitter.populateTransaction.setEmission({
         pools:
           pools?.map((pool) => ({
             baseToken: pool.baseToken,
@@ -168,8 +168,7 @@ export const SetEmission = () => {
           })) || [],
         treasuryWeight,
         callerWeight,
-      }
-    );
+      });
     const { to, data } = emissionSetTx;
     if (!to || !data) {
       throw Error("Failed to create tx");

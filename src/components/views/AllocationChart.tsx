@@ -111,6 +111,7 @@ export const AllocationChart: React.FC<AllocationChartProps> = ({
 
   return (
     <Container style={{ height: 300 }}>
+      <h1>{data.reduce((acc, d) => acc + d.value, 0)}</h1>
       <ResponsiveContainer>
         <PieChart>
           <Pie
