@@ -121,16 +121,20 @@ export const SetEmission = () => {
         : sum.div(33);
       sum = sum.add(protocol);
       setEmissionWeightForChart({
-        treasury: emissionWeight.treasury.toNumber(),
-        caller: emissionWeight.caller.toNumber(),
+        treasury: treasuryWeight || emissionWeight.treasury.toNumber(),
+        caller: callerWeight || emissionWeight.caller.toNumber(),
         protocol: protocol.toNumber(),
         dev: dev.toNumber(),
         sum: sum.toNumber(),
       });
-      setTreasuryWeight(emissionWeight.treasury.toNumber());
-      setCallerWeight(emissionWeight.caller.toNumber());
+      if (!treasuryWeight) {
+        setTreasuryWeight(emissionWeight.treasury.toNumber());
+      }
+      if (!callerWeight) {
+        setCallerWeight(emissionWeight.caller.toNumber());
+      }
     }
-  }, [pools, emissionWeight, founderShareDenom]);
+  }, [pools, emissionWeight, founderShareDenom, treasuryWeight, callerWeight]);
 
   const reset = async () => {
     const _emissionWeight = Object.assign({}, emissionWeight);
