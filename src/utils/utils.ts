@@ -62,7 +62,8 @@ export const parseLog = (
 };
 
 export const wrapUrl = (text: string) => {
-  const pattern = /(?:(?:https?):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\x{00a1}\-\x{ffff}0-9]+-?)*[a-z\x{00a1}\-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}\-\x{ffff}0-9]+-?)*[a-z\x{00a1}\-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}\-\x{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?/gi;
+  const pattern =
+    /(?:(?:https?):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\x{00a1}\-\x{ffff}0-9]+-?)*[a-z\x{00a1}\-\x{ffff}0-9]+)(?:\.(?:[a-z\x{00a1}\-\x{ffff}0-9]+-?)*[a-z\x{00a1}\-\x{ffff}0-9]+)*(?:\.(?:[a-z\x{00a1}\-\x{ffff}]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?/gi;
   const wrapped = text.replace(pattern, (url) => {
     const protocol_pattern = /^(?:(?:https?|ftp):\/\/)/i;
     const href = protocol_pattern.test(url) ? url : "http://" + url;
@@ -264,27 +265,25 @@ export const permaPinToArweave = async (cid: string): Promise<string> => {
   return arweaveId;
 };
 
-export const errorHandler = (
-  addToast: AddToast,
-  msg?: string,
-  fn?: (_err?: Error) => void
-) => (err: Error) => {
-  let errMsg: string;
-  if ((err as any).error) {
-    errMsg = `${(err as any).reason} - ${(err as any).error.message}`;
-  } else if ((err as any).data?.message) {
-    errMsg = (err as any).data?.message;
-  } else {
-    errMsg = err.message;
-  }
-  addToast({
-    variant: "danger",
-    content: msg ? `${msg}: ${errMsg}` : `${errMsg}`,
-  });
-  if (fn) {
-    fn(err);
-  }
-};
+export const errorHandler =
+  (addToast: AddToast, msg?: string, fn?: (_err?: Error) => void) =>
+  (err: Error) => {
+    let errMsg: string;
+    if ((err as any).error) {
+      errMsg = `${(err as any).reason} - ${(err as any).error.message}`;
+    } else if ((err as any).data?.message) {
+      errMsg = (err as any).data?.message;
+    } else {
+      errMsg = err.message;
+    }
+    addToast({
+      variant: "danger",
+      content: msg ? `${msg}: ${errMsg}` : `${errMsg}`,
+    });
+    if (fn) {
+      fn(err);
+    }
+  };
 
 export const handleTransaction = (
   transaction: Promise<ContractTransaction>,
@@ -563,9 +562,9 @@ export const getTokenSymbol = async (
 ): Promise<string> => {
   if (tokenType === TokenType.ERC20) {
     const symbol = await ERC20__factory.connect(address, provider).symbol();
-    if (symbol === "UNI-V2") {
+    if (["UNI-V2", "SLP", "YLP"].includes(symbol)) {
       const { symbol0, symbol1 } = await getLPTokenSymbols(address, provider);
-      return `${symbol0}/${symbol1} LP`;
+      return `${symbol0}/${symbol1} ${symbol}`;
     } else {
       return symbol;
     }
