@@ -9,6 +9,7 @@ import StoreIcon from "../components/icons/StoreIcon";
 import MineIcon from "../components/icons/MineIcon";
 import DupIcon from "../components/icons/DupIcon";
 import MultiSig from "../components/icons/DupIcon";
+import HomeIcon from "../components/icons/HomeIcon";
 import NavBar from "../components/nav/NavBar";
 import Footer from "../components/Footer";
 import { Menu } from "../contexts/menu";
@@ -68,6 +69,11 @@ const Page = (props: React.ComponentProps<any>) => {
         Icon: MultisigIcon,
         name: "Multisig",
         url: prefix(daoId, "/multisig"),
+      },
+      {
+        Icon: HomeIcon,
+        name: "Landing",
+        url: "/landing",
       },
     ];
   } else {

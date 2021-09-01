@@ -74,6 +74,13 @@ function App() {
                         return null;
                       }}
                     />
+                    <Route
+                      path="/landing"
+                      component={() => {
+                        window.location.replace("https://workhard.finance");
+                        return null;
+                      }}
+                    />
                     <Route path="/:daoId?/" children={<Dashboard />} />
                   </Switch>
                 </WorkhardThemeProvider>
