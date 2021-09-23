@@ -104,7 +104,7 @@ export const MultisigAdmin = () => {
                 <p>
                   Here, you are scheduling a governance transaction to the
                   timelock contract using Gnosis Multisig Wallet. Confirm the
-                  scheduling on Gnosis and go to transaction tab in Gov menu.
+                  scheduling on Gnosis and go to the transaction tab in the Gov menu.
                   You will be able to execute them after the timelock delay.
                 </p>
               </SerHelpPlz>
